@@ -52,12 +52,14 @@ struct MixpanelUserDefaultsKeys {
 class MixpanelPersistence {
     
     let instanceName: String
+    let directory: URL
     let mpdb: MPDB
     private static let archivedClasses = [NSArray.self, NSDictionary.self, NSSet.self, NSString.self, NSDate.self, NSURL.self, NSNumber.self, NSNull.self]
     
-    init(instanceName: String) {
+    init(instanceName: String, directory: URL) {
         self.instanceName = instanceName
-        mpdb = MPDB.init(token: instanceName)
+        self.directory = directory
+        mpdb = MPDB.init(token: instanceName, directory: directory)
     }
     
     deinit {

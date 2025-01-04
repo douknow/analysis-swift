@@ -15,10 +15,12 @@ class MPDB {
     private let DB_FILE_NAME: String = "MPDB.sqlite"
     
     let apiToken: String
+    let directory: URL
     
-    init(token: String) {
+    init(token: String, directory: URL) {
         // token can be instanceName which can be any string so we strip all non-alhpanumeric characters to prevent SQL errors
         apiToken = String(token.unicodeScalars.filter({ CharacterSet.alphanumerics.contains($0) }))
+        self.directory = directory
         open()
     }
     
@@ -28,16 +30,15 @@ class MPDB {
     
     private func pathToDb() -> String? {
         let manager = FileManager.default
-        #if os(iOS)
-            let url = manager.urls(for: .libraryDirectory, in: .userDomainMask).last
-        #else
-            let url = manager.urls(for: .cachesDirectory, in: .userDomainMask).last
-        #endif // os(iOS)
-
-        guard let urlUnwrapped = url?.appendingPathComponent(apiToken + "_" + DB_FILE_NAME).path else {
-            return nil
+        if !manager.fileExists(atPath: directory.path) {
+            do {
+                try manager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+            } catch let error {
+                Logger.error(message: "Unable to create directory at path: \(directory.path), error: \(error)")
+                return nil
+            }
         }
-        return urlUnwrapped
+        return directory.appendingPathComponent(apiToken + "_" + DB_FILE_NAME).path
     }
     
     private func tableNameFor(_ persistenceType: PersistenceType) -> String {

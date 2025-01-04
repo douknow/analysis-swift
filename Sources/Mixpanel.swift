@@ -43,6 +43,7 @@ open class Mixpanel {
                                trackAutomaticEvents: Bool,
                                flushInterval: Double = 60,
                                instanceName: String? = nil,
+                               directory: URL,
                                optOutTrackingByDefault: Bool = false,
                                useUniqueDistinctId: Bool = false,
                                superProperties: Properties? = nil,
@@ -50,6 +51,7 @@ open class Mixpanel {
         return MixpanelManager.sharedInstance.initialize(token: apiToken,
                                                          flushInterval: flushInterval,
                                                          instanceName: ((instanceName != nil) ? instanceName! : apiToken),
+                                                         directory: directory,
                                                          trackAutomaticEvents: trackAutomaticEvents,
                                                          optOutTrackingByDefault: optOutTrackingByDefault,
                                                          useUniqueDistinctId: useUniqueDistinctId,
@@ -86,6 +88,7 @@ open class Mixpanel {
                                trackAutomaticEvents: Bool,
                                flushInterval: Double = 60,
                                instanceName: String? = nil,
+                               directory: URL,
                                optOutTrackingByDefault: Bool = false,
                                useUniqueDistinctId: Bool = false,
                                superProperties: Properties? = nil,
@@ -93,6 +96,7 @@ open class Mixpanel {
         return MixpanelManager.sharedInstance.initialize(token: apiToken,
                                                          flushInterval: flushInterval,
                                                          instanceName: ((instanceName != nil) ? instanceName! : apiToken),
+                                                         directory: directory,
                                                          trackAutomaticEvents: trackAutomaticEvents,
                                                          optOutTrackingByDefault: optOutTrackingByDefault,
                                                          useUniqueDistinctId: useUniqueDistinctId,
@@ -211,7 +215,8 @@ open class Mixpanel {
             #endif
             
 #if !os(OSX) && !os(watchOS)
-            return Mixpanel.initialize(token: "", trackAutomaticEvents: true)
+            let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            return Mixpanel.initialize(token: "", trackAutomaticEvents: true, directory: directory)
 #else
             return Mixpanel.initialize(token: "")
 #endif
@@ -256,6 +261,7 @@ final class MixpanelManager {
     func initialize(token apiToken: String,
                     flushInterval: Double,
                     instanceName: String,
+                    directory: URL,
                     trackAutomaticEvents: Bool,
                     optOutTrackingByDefault: Bool = false,
                     useUniqueDistinctId: Bool = false,
@@ -266,6 +272,7 @@ final class MixpanelManager {
             return MixpanelInstance(apiToken: apiToken,
                                     flushInterval: flushInterval,
                                     name: instanceName,
+                                    directory: directory,
                                     trackAutomaticEvents: trackAutomaticEvents,
                                     optOutTrackingByDefault: optOutTrackingByDefault,
                                     useUniqueDistinctId: useUniqueDistinctId,
@@ -277,6 +284,7 @@ final class MixpanelManager {
     func initialize(token apiToken: String,
                     flushInterval: Double,
                     instanceName: String,
+                    directory: URL,
                     trackAutomaticEvents: Bool,
                     optOutTrackingByDefault: Bool = false,
                     useUniqueDistinctId: Bool = false,
@@ -287,6 +295,7 @@ final class MixpanelManager {
             return MixpanelInstance(apiToken: apiToken,
                                     flushInterval: flushInterval,
                                     name: instanceName,
+                                    directory: directory,
                                     trackAutomaticEvents: trackAutomaticEvents,
                                     optOutTrackingByDefault: optOutTrackingByDefault,
                                     useUniqueDistinctId: useUniqueDistinctId,

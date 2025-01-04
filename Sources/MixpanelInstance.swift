@@ -266,6 +266,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         apiToken: String?,
         flushInterval: Double,
         name: String,
+        directory: URL,
         trackAutomaticEvents: Bool,
         optOutTrackingByDefault: Bool = false,
         useUniqueDistinctId: Bool = false,
@@ -275,6 +276,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         self.init(apiToken: apiToken,
                   flushInterval: flushInterval,
                   name: name,
+                  directory: directory,
                   trackAutomaticEvents: trackAutomaticEvents,
                   optOutTrackingByDefault: optOutTrackingByDefault,
                   useUniqueDistinctId: useUniqueDistinctId,
@@ -287,6 +289,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         apiToken: String?,
         flushInterval: Double,
         name: String,
+        directory: URL,
         trackAutomaticEvents: Bool,
         optOutTrackingByDefault: Bool = false,
         useUniqueDistinctId: Bool = false,
@@ -296,6 +299,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         self.init(apiToken: apiToken,
                   flushInterval: flushInterval,
                   name: name,
+                  directory: directory,
                   trackAutomaticEvents: trackAutomaticEvents,
                   optOutTrackingByDefault: optOutTrackingByDefault,
                   useUniqueDistinctId: useUniqueDistinctId,
@@ -309,6 +313,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         apiToken: String?,
         flushInterval: Double,
         name: String,
+        directory: URL,
         trackAutomaticEvents: Bool,
         optOutTrackingByDefault: Bool = false,
         useUniqueDistinctId: Bool = false,
@@ -329,7 +334,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         networkQueue = DispatchQueue(label: "\(label).network)", qos: .utility, autoreleaseFrequency: .workItem)
         self.name = name
         
-        mixpanelPersistence = MixpanelPersistence.init(instanceName: name)
+        mixpanelPersistence = MixpanelPersistence.init(instanceName: name, directory: directory)
         mixpanelPersistence.migrate()
         self.useUniqueDistinctId = useUniqueDistinctId
         
