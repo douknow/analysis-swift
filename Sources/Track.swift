@@ -76,7 +76,7 @@ class Track {
             p += properties
         }
 
-        var trackEvent: InternalProperties = ["event": ev, "properties": p]
+        var trackEvent: InternalProperties = ["name": ev, "properties": p]
         metadata.toDict().forEach { (k, v) in trackEvent[k] = v }
         
         self.mixpanelPersistence.saveEntity(trackEvent, type: .events)
