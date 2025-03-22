@@ -131,6 +131,7 @@ open class Mixpanel {
     open class func initialize(token apiToken: String,
                                flushInterval: Double = 60,
                                instanceName: String? = nil,
+                               directory: URL,
                                optOutTrackingByDefault: Bool = false,
                                useUniqueDistinctId: Bool = false,
                                superProperties: Properties? = nil,
@@ -138,6 +139,7 @@ open class Mixpanel {
         return MixpanelManager.sharedInstance.initialize(token: apiToken,
                                                          flushInterval: flushInterval,
                                                          instanceName: ((instanceName != nil) ? instanceName! : apiToken),
+                                                         directory: directory,
                                                          trackAutomaticEvents: false,
                                                          optOutTrackingByDefault: optOutTrackingByDefault,
                                                          useUniqueDistinctId: useUniqueDistinctId,
@@ -172,6 +174,7 @@ open class Mixpanel {
     open class func initialize(token apiToken: String,
                                flushInterval: Double = 60,
                                instanceName: String? = nil,
+                               directory: URL,
                                optOutTrackingByDefault: Bool = false,
                                useUniqueDistinctId: Bool = false,
                                superProperties: Properties? = nil,
@@ -179,6 +182,7 @@ open class Mixpanel {
         return MixpanelManager.sharedInstance.initialize(token: apiToken,
                                                          flushInterval: flushInterval,
                                                          instanceName: ((instanceName != nil) ? instanceName! : apiToken),
+                                                         directory: directory,
                                                          trackAutomaticEvents: false,
                                                          optOutTrackingByDefault: optOutTrackingByDefault,
                                                          useUniqueDistinctId: useUniqueDistinctId,
@@ -218,7 +222,8 @@ open class Mixpanel {
             let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             return Mixpanel.initialize(token: "", trackAutomaticEvents: true, directory: directory)
 #else
-            return Mixpanel.initialize(token: "")
+            let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            return Mixpanel.initialize(token: "", directory: directory)
 #endif
             
         }
